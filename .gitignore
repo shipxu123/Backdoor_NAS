@@ -1,0 +1,15 @@
+*.swp
+*.pyc
+*.ipynb
+__pycache__
+checkpoints
+events
+log.txt
+results
+**.DS_Store**
+.env
+.idea/
+debug/
+slurm*
+bignas/
+log.train.default*

@@ -1,0 +1,248 @@
+Import metrics failed!
+[2021-10-11 09:33:51,479][  cls_solver.py][line:  56][    INFO] config: {'bignas': {'data': {'image_size_list': [32],
+                     'interpolation_type': 'bicubic',
+                     'share_interpolation': False,
+                     'stride': 8,
+                     'test_image_size_list': [32]},
+            'distiller': {'kwargs': {'T': 1},
+                          's_name': ['classifier'],
+                          't_name': ['classifier'],
+                          'type': 'inplace_kd',
+                          'weight': 1.0},
+            'subnet': {'image_size': 32,
+                       'save_subnet_weight': True,
+                       'subnet_settings': {'depth': [1, 2, 2, 2, 2],
+                                           'kernel_size': [3, 3, 3, 3, 3],
+                                           'out_channel': [64,
+                                                           64,
+                                                           128,
+                                                           256,
+                                                           512]},
+                       'test_subnet_latency': False},
+            'train': {'sample_strategy': ['max', 'random', 'random', 'min'],
+                      'sample_subnet_num': 4,
+                      'valid_before_train': False}},
+ 'data': {'autoaugment': True,
+          'batch_size': 512,
+          'cutout': True,
+          'input_size': 32,
+          'num_workers': 4,
+          'task': 'cifar100',
+          'test': {'root': '/data/public/cifar'},
+          'train': {'root': '/data/public/cifar'}},
+ 'dist': {'sync': False},
+ 'ema': {'enable': False, 'kwargs': {'decay': 0.999}},
+ 'lms': {'enable': False, 'kwargs': {'limit': 12}},
+ 'lr_scheduler': {'kwargs': {'base_lr': 0.02,
+                             'max_epoch': 20,
+                             'min_lr': 0.0,
+                             'warmup_epoch': 0,
+                             'warmup_lr': 0.02},
+                  'type': 'CosineEpoch'},
+ 'model': {'kwargs': {'depth': {'sample_strategy': 'stage_wise_depth',
+                                'space': {'max': [1, 2, 2, 3, 3],
+                                          'min': [1, 1, 1, 1, 1],
+                                          'stride': 1}},
+                      'expand_ratio': [0, 1, 1, 1, 1],
+                      'kernel_size': {'sample_strategy': 'stage_wise',
+                                      'space': {'max': [7, 3, 3, 3, 3],
+                                                'min': [3, 3, 3, 3, 3],
+                                                'stride': 2}},
+                      'num_classes': 100,
+                      'out_channel': {'sample_strategy': 'stage_wise',
+                                      'space': {'max': [64, 96, 160, 320, 640],
+                                                'min': [32, 32, 64, 128, 256],
+                                                'stride': [8, 8, 16, 16, 32]}},
+                      'stride_stages': [1, 1, 2, 2, 2],
+                      'use_maxpool': False,
+                      'zero_last_gamma': True},
+           'type': 'spring_big_resnet_basic'},
+ 'optimizer': {'dist': {'sync': False},
+               'fp16_normal_bn': False,
+               'kwargs': {'momentum': 0.9,
+                          'nesterov': True,
+                          'weight_decay': 0.0005},
+               'type': 'SGD'},
+ 'saver': {'pretrain': {'path': './checkpoints/ckpt.pth.tar'},
+           'print_freq': 10,
+           'save_many': False,
+           'val_epoch_freq': 1,
+           'val_freq': 5000},
+ 'seed_base': 304}
+[2021-10-11 09:33:51,480][  cls_solver.py][line:  58][    INFO] hostnames: g0009
+[2021-10-11 09:33:52,198][  cls_solver.py][line:  62][    INFO] Recovering from ./checkpoints/ckpt.pth.tar, keys=['last_iter', 'model', 'optimizer']
+[2021-10-11 09:33:59,411][        misc.py][line: 146][    INFO] total param: 26.845M, conv: 26.764M, fc: 0.064M, others: 0.016M
+[2021-10-11 09:33:59,437][        misc.py][line: 234][    INFO] total FLOPS: 1198.98M
+[2021-10-11 09:33:59,437][        misc.py][line: 369][    INFO] ======= loading model state... =======
+[2021-10-11 09:33:59,470][        misc.py][line: 326][    INFO] bn_w
+[2021-10-11 09:33:59,470][        misc.py][line: 329][    INFO]    params: 25
+[2021-10-11 09:33:59,470][        misc.py][line: 326][    INFO] bn_b
+[2021-10-11 09:33:59,470][        misc.py][line: 329][    INFO]    params: 25
+[2021-10-11 09:33:59,470][        misc.py][line: 326][    INFO] conv_b
+[2021-10-11 09:33:59,471][        misc.py][line: 329][    INFO]    params: 0
+[2021-10-11 09:33:59,471][        misc.py][line: 326][    INFO] linear_b
+[2021-10-11 09:33:59,471][        misc.py][line: 329][    INFO]    params: 1
+[2021-10-11 09:33:59,471][        misc.py][line: 383][    INFO] ======= loading optimizer state... =======
+[2021-10-11 09:34:02,184][bignas_cifar10_base_solver.py][line:  98][    INFO] model network structure: Big_ResNet_Basic(
+  (first_conv): DynamicConvBlock(
+    (conv): DynamicConv2d(3, 64, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), bias=False)
+    (bn): DynamicBatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (act): ReLU(inplace=True)
+  )
+  (blocks): ModuleList(
+    (0): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(64, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): DynamicConv2d(64, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (shortcutbn): DynamicBatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): ReLU(inplace=True)
+    )
+    (1): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): Identity()
+      (act2): ReLU(inplace=True)
+    )
+    (2): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(96, 160, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(160, 160, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): DynamicConv2d(96, 160, kernel_size=(1, 1), stride=(2, 2), bias=False)
+      (shortcutbn): DynamicBatchNorm2d(160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): ReLU(inplace=True)
+    )
+    (3): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(160, 160, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(160, 160, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): Identity()
+      (act2): ReLU(inplace=True)
+    )
+    (4): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(160, 320, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(320, 320, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): DynamicConv2d(160, 320, kernel_size=(1, 1), stride=(2, 2), bias=False)
+      (shortcutbn): DynamicBatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): ReLU(inplace=True)
+    )
+    (5): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(320, 320, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(320, 320, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): Identity()
+      (act2): ReLU(inplace=True)
+    )
+    (6): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(320, 320, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(320, 320, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): Identity()
+      (act2): ReLU(inplace=True)
+    )
+    (7): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(320, 640, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(640, 640, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): DynamicConv2d(320, 640, kernel_size=(1, 1), stride=(2, 2), bias=False)
+      (shortcutbn): DynamicBatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): ReLU(inplace=True)
+    )
+    (8): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(640, 640, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(640, 640, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): Identity()
+      (act2): ReLU(inplace=True)
+    )
+    (9): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(640, 640, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(640, 640, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): Identity()
+      (act2): ReLU(inplace=True)
+    )
+  )
+  (avg_pool): AdaptiveAvgPool2d(output_size=1)
+  (classifier): DynamicLinearBlock(
+    (linear): DynamicLinear(in_features=640, out_features=100, bias=True)
+  )
+)
+{'name': 'spring.nas.bignas'}
+{'name': 'spring.distiller.mimicker'}
+{'name': 'spring.distiller.mimicjob', 'mimic_name': 'job1', 'mimic_type': 'kd'}
+[2021-10-11 09:34:02,192][cls_controller.py][line: 113][    INFO] Subnet with settings: {'kernel_size': [3, 3, 3, 3, 3], 'out_channel': [64, 64, 128, 256, 512], 'depth': [1, 2, 2, 2, 2]}	image_size (1, 3, 32, 32)	flops 555.469	params 11.21
+[2021-10-11 09:34:02,793][bignas_cifar10_backdoor_solver.py][line: 119][    INFO] build backdoor test dataset with length of  20
+[2021-10-11 09:34:04,538][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [10/20]	Time 0.071 (0.174)
+[2021-10-11 09:34:05,119][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [20/20]	Time 0.041 (0.116)
+[2021-10-11 09:34:05,215][bignas_cifar10_base_solver.py][line: 468][    INFO]  * Prec@1 95.470	Prec@5 99.870	            Loss 0.230	total_num=10000.0
+[2021-10-11 09:34:05,215][bignas_cifar10_base_solver.py][line: 488][    INFO] Subnet with settings: {'kernel_size': [3, 3, 3, 3, 3, 3, 3, 3, 3], 'out_channel': [64, 64, 64, 128, 128, 256, 256, 512, 512], 'depth': [1, 2, 2, 2, 2]}	top1 95.47	top5 99.87
+[2021-10-11 09:34:05,693][bignas_cifar10_backdoor_solver.py][line: 119][    INFO] build backdoor test dataset with length of  20
+[2021-10-11 09:34:06,907][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [10/20]	Time 0.079 (0.121)
+[2021-10-11 09:34:07,487][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [20/20]	Time 0.041 (0.090)
+[2021-10-11 09:34:07,558][bignas_cifar10_base_solver.py][line: 468][    INFO]  * Prec@1 5.280	Prec@5 82.120	            Loss 16.622	total_num=10000.0
+[2021-10-11 09:34:07,559][bignas_cifar10_base_solver.py][line: 488][    INFO] Subnet with settings: {'kernel_size': [3, 3, 3, 3, 3, 3, 3, 3, 3], 'out_channel': [64, 64, 64, 128, 128, 256, 256, 512, 512], 'depth': [1, 2, 2, 2, 2]}	top1 5.28	top5 82.12
+[2021-10-11 09:34:07,561][bignas_cifar10_backdoor_solver.py][line: 163][    INFO] Evaluate_subnet on BackDoor Target	{"flops": 555.469, "params": 11.21, "image_size": 32, "subnet_settings": {"kernel_size": [3, 3, 3, 3, 3], "out_channel": [64, 64, 128, 256, 512], "depth": [1, 2, 2, 2, 2]}, "top1": 95.47, "top5": 99.87}
+[2021-10-11 09:34:07,561][bignas_cifar10_backdoor_solver.py][line: 167][    INFO] Evaluate_subnet on BackDoor Org	{"flops": 555.469, "params": 11.21, "image_size": 32, "subnet_settings": {"kernel_size": [3, 3, 3, 3, 3], "out_channel": [64, 64, 128, 256, 512], "depth": [1, 2, 2, 2, 2]}, "top1": 5.28, "top5": 82.12}

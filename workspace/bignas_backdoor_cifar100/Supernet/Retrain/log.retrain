@@ -1,0 +1,280 @@
+Import metrics failed!
+finetune_subnet
+[2021-10-10 19:36:05,637][  cls_solver.py][line:  56][    INFO] config: {'bignas': {'data': {'image_size_list': [32],
+                     'interpolation_type': 'bicubic',
+                     'share_interpolation': False,
+                     'stride': 8,
+                     'test_image_size_list': [32]},
+            'distiller': {'kwargs': {'T': 1},
+                          's_name': ['classifier'],
+                          't_name': ['classifier'],
+                          'type': 'inplace_kd',
+                          'weight': 1.0},
+            'latency': {'hardware1': {'backend_name': 'hisvp-nnie11',
+                                      'batch_size': 8,
+                                      'data_type': 'int8',
+                                      'hardware_name': '3559A',
+                                      'test_latency': True},
+                        'hardware2': {'backend_name': 'cuda11.0-trt7.1',
+                                      'batch_size': 64,
+                                      'data_type': 'int8',
+                                      'hardware_name': 'T4',
+                                      'test_latency': True},
+                        'hardware3': {'backend_name': 'ppl2',
+                                      'batch_size': 1,
+                                      'data_type': 'fp32',
+                                      'hardware_name': 'cpu',
+                                      'test_latency': True}},
+            'subnet': {'image_size': 32,
+                       'save_subnet_weight': True,
+                       'subnet_settings': {'depth': [1, 2, 2, 2, 2],
+                                           'kernel_size': [3, 3, 3, 3, 3],
+                                           'out_channel': [64,
+                                                           64,
+                                                           128,
+                                                           256,
+                                                           512]},
+                       'test_subnet_latency': False},
+            'train': {'sample_strategy': ['max', 'random', 'random', 'min'],
+                      'sample_subnet_num': 4,
+                      'valid_before_train': False}},
+ 'data': {'autoaugment': True,
+          'batch_size': 512,
+          'cutout': True,
+          'input_size': 32,
+          'num_workers': 4,
+          'task': 'cifar100',
+          'test': {'root': '/data/public/cifar'},
+          'train': {'root': '/data/public/cifar'}},
+ 'dist': {'sync': False},
+ 'ema': {'enable': False, 'kwargs': {'decay': 0.999}},
+ 'lms': {'enable': False, 'kwargs': {'limit': 12}},
+ 'lr_scheduler': {'kwargs': {'base_lr': 0.2,
+                             'max_epoch': 200,
+                             'min_lr': 0.0,
+                             'warmup_epoch': 0,
+                             'warmup_lr': 0.2},
+                  'type': 'CosineEpoch'},
+ 'model': {'kwargs': {'depth': {'sample_strategy': 'stage_wise_depth',
+                                'space': {'max': [1, 2, 2, 3, 3],
+                                          'min': [1, 1, 1, 1, 1],
+                                          'stride': 1}},
+                      'expand_ratio': [0, 1, 1, 1, 1],
+                      'kernel_size': {'sample_strategy': 'stage_wise',
+                                      'space': {'max': [7, 3, 3, 3, 3],
+                                                'min': [3, 3, 3, 3, 3],
+                                                'stride': 2}},
+                      'num_classes': 100,
+                      'out_channel': {'sample_strategy': 'stage_wise',
+                                      'space': {'max': [64, 96, 160, 320, 640],
+                                                'min': [32, 32, 64, 128, 256],
+                                                'stride': [8, 8, 16, 16, 32]}},
+                      'stride_stages': [1, 1, 2, 2, 2],
+                      'use_maxpool': False,
+                      'zero_last_gamma': True},
+           'type': 'spring_big_resnet_basic'},
+ 'optimizer': {'dist': {'sync': False},
+               'fp16_normal_bn': False,
+               'kwargs': {'momentum': 0.9,
+                          'nesterov': True,
+                          'weight_decay': 0.0005},
+               'type': 'SGD'},
+ 'saver': {'pretrain': {'path': '../checkpoints/ckpt.pth.tar'},
+           'print_freq': 10,
+           'save_many': False,
+           'val_epoch_freq': 50,
+           'val_freq': 5000},
+ 'seed_base': 304}
+[2021-10-10 19:36:05,638][  cls_solver.py][line:  58][    INFO] hostnames: g0018
+[2021-10-10 19:36:06,505][  cls_solver.py][line:  62][    INFO] Recovering from ../checkpoints/ckpt.pth.tar, keys=['last_iter', 'model', 'optimizer']
+[2021-10-10 19:36:14,146][        misc.py][line: 146][    INFO] total param: 26.845M, conv: 26.764M, fc: 0.064M, others: 0.016M
+[2021-10-10 19:36:14,183][        misc.py][line: 234][    INFO] total FLOPS: 1198.98M
+[2021-10-10 19:36:14,183][        misc.py][line: 369][    INFO] ======= loading model state... =======
+[2021-10-10 19:36:14,216][        misc.py][line: 326][    INFO] bn_w
+[2021-10-10 19:36:14,217][        misc.py][line: 329][    INFO]    params: 25
+[2021-10-10 19:36:14,217][        misc.py][line: 326][    INFO] bn_b
+[2021-10-10 19:36:14,217][        misc.py][line: 329][    INFO]    params: 25
+[2021-10-10 19:36:14,217][        misc.py][line: 326][    INFO] conv_b
+[2021-10-10 19:36:14,217][        misc.py][line: 329][    INFO]    params: 0
+[2021-10-10 19:36:14,217][        misc.py][line: 326][    INFO] linear_b
+[2021-10-10 19:36:14,217][        misc.py][line: 329][    INFO]    params: 1
+[2021-10-10 19:36:14,217][        misc.py][line: 383][    INFO] ======= loading optimizer state... =======
+[2021-10-10 19:36:16,761][bignas_cifar10_base_solver.py][line:  98][    INFO] model network structure: Big_ResNet_Basic(
+  (first_conv): DynamicConvBlock(
+    (conv): DynamicConv2d(3, 64, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), bias=False)
+    (bn): DynamicBatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (act): ReLU(inplace=True)
+  )
+  (blocks): ModuleList(
+    (0): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(64, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): DynamicConv2d(64, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (shortcutbn): DynamicBatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): ReLU(inplace=True)
+    )
+    (1): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(96, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): Identity()
+      (act2): ReLU(inplace=True)
+    )
+    (2): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(96, 160, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(160, 160, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): DynamicConv2d(96, 160, kernel_size=(1, 1), stride=(2, 2), bias=False)
+      (shortcutbn): DynamicBatchNorm2d(160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): ReLU(inplace=True)
+    )
+    (3): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(160, 160, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(160, 160, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(160, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): Identity()
+      (act2): ReLU(inplace=True)
+    )
+    (4): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(160, 320, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(320, 320, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): DynamicConv2d(160, 320, kernel_size=(1, 1), stride=(2, 2), bias=False)
+      (shortcutbn): DynamicBatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): ReLU(inplace=True)
+    )
+    (5): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(320, 320, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(320, 320, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): Identity()
+      (act2): ReLU(inplace=True)
+    )
+    (6): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(320, 320, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(320, 320, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(320, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): Identity()
+      (act2): ReLU(inplace=True)
+    )
+    (7): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(320, 640, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(640, 640, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): DynamicConv2d(320, 640, kernel_size=(1, 1), stride=(2, 2), bias=False)
+      (shortcutbn): DynamicBatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (act2): ReLU(inplace=True)
+    )
+    (8): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(640, 640, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(640, 640, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): Identity()
+      (act2): ReLU(inplace=True)
+    )
+    (9): DynamicBasicBlock(
+      (normal_conv1): Sequential(
+        (conv): DynamicConv2d(640, 640, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (act): ReLU(inplace=True)
+      )
+      (normal_conv2): Sequential(
+        (conv): DynamicConv2d(640, 640, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): DynamicBatchNorm2d(640, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (shortcut): Identity()
+      (act2): ReLU(inplace=True)
+    )
+  )
+  (avg_pool): AdaptiveAvgPool2d(output_size=1)
+  (classifier): DynamicLinearBlock(
+    (linear): DynamicLinear(in_features=640, out_features=100, bias=True)
+  )
+)
+{'name': 'spring.nas.bignas'}
+{'name': 'spring.distiller.mimicker'}
+{'name': 'spring.distiller.mimicjob', 'mimic_name': 'job1', 'mimic_type': 'kd'}
+[2021-10-10 19:36:18,331][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [10/20]	Time 0.060 (0.157)
+[2021-10-10 19:36:18,844][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [20/20]	Time 0.029 (0.104)
+[2021-10-10 19:36:18,899][bignas_cifar10_base_solver.py][line: 468][    INFO]  * Prec@1 77.080	Prec@5 94.330	            Loss 1.066	total_num=10000.0
+[2021-10-10 19:36:18,900][bignas_cifar10_base_solver.py][line: 488][    INFO] Subnet with settings: {'kernel_size': [3, 3, 3, 3, 3, 3, 3, 3, 3], 'out_channel': [64, 64, 64, 128, 128, 256, 256, 512, 512], 'depth': [1, 2, 2, 2, 2]}	top1 77.08	top5 94.33
+[2021-10-10 19:36:18,905][cls_controller.py][line: 113][    INFO] Subnet with settings: {'kernel_size': [3, 3, 3, 3, 3], 'out_channel': [64, 64, 128, 256, 512], 'depth': [1, 2, 2, 2, 2]}	image_size (1, 3, 32, 32)	flops 555.469	params 11.21
+[2021-10-10 19:36:18,907][bignas_cifar10_base_solver.py][line: 572][    INFO] Before finetune subnet {"flops": 555.469, "params": 11.21, "image_size": 32, "subnet_settings": {"kernel_size": [3, 3, 3, 3, 3], "out_channel": [64, 64, 128, 256, 512], "depth": [1, 2, 2, 2, 2]}, "top1": 77.08, "top5": 94.33}
+[2021-10-10 19:36:18,907][bignas_cifar10_base_solver.py][line: 530][    INFO] build subnet finetune training dataset with image size 32 max_iter 19600
+  0%|          | 0/200 [00:00<?, ?it/s]  0%|          | 1/200 [01:10<3:53:04, 70.28s/it]  1%|          | 2/200 [02:21<3:53:07, 70.64s/it]  2%|▏         | 3/200 [03:32<3:52:25, 70.79s/it]  2%|▏         | 4/200 [04:43<3:51:34, 70.89s/it]  2%|▎         | 5/200 [05:54<3:50:46, 71.01s/it]  3%|▎         | 6/200 [07:05<3:49:55, 71.11s/it]  4%|▎         | 7/200 [08:17<3:49:12, 71.26s/it]  4%|▍         | 8/200 [09:28<3:48:16, 71.34s/it]  4%|▍         | 9/200 [10:40<3:47:12, 71.38s/it]  5%|▌         | 10/200 [11:51<3:46:08, 71.41s/it]  6%|▌         | 11/200 [13:03<3:45:00, 71.43s/it]  6%|▌         | 12/200 [14:14<3:43:50, 71.44s/it]  6%|▋         | 13/200 [15:26<3:42:43, 71.46s/it]  7%|▋         | 14/200 [16:37<3:41:35, 71.48s/it]  8%|▊         | 15/200 [17:49<3:40:25, 71.49s/it]  8%|▊         | 16/200 [19:00<3:39:17, 71.51s/it]  8%|▊         | 17/200 [20:12<3:38:04, 71.50s/it]  9%|▉         | 18/200 [21:23<3:36:51, 71.49s/it] 10%|▉         | 19/200 [22:35<3:35:39, 71.49s/it] 10%|█         | 20/200 [23:46<3:34:28, 71.49s/it] 10%|█         | 21/200 [24:58<3:33:20, 71.51s/it] 11%|█         | 22/200 [26:09<3:32:18, 71.57s/it] 12%|█▏        | 23/200 [27:21<3:31:04, 71.55s/it] 12%|█▏        | 24/200 [28:33<3:29:54, 71.56s/it] 12%|█▎        | 25/200 [29:44<3:28:37, 71.53s/it] 13%|█▎        | 26/200 [30:56<3:27:26, 71.53s/it] 14%|█▎        | 27/200 [32:07<3:26:14, 71.53s/it] 14%|█▍        | 28/200 [33:19<3:25:04, 71.54s/it] 14%|█▍        | 29/200 [34:30<3:23:49, 71.52s/it] 15%|█▌        | 30/200 [35:42<3:22:35, 71.50s/it] 16%|█▌        | 31/200 [36:53<3:21:24, 71.51s/it] 16%|█▌        | 32/200 [38:05<3:20:24, 71.58s/it] 16%|█▋        | 33/200 [39:16<3:19:09, 71.55s/it] 17%|█▋        | 34/200 [40:28<3:17:53, 71.52s/it] 18%|█▊        | 35/200 [41:39<3:16:35, 71.49s/it] 18%|█▊        | 36/200 [42:51<3:15:23, 71.48s/it] 18%|█▊        | 37/200 [44:02<3:14:11, 71.48s/it] 19%|█▉        | 38/200 [45:14<3:13:01, 71.49s/it] 20%|█▉        | 39/200 [46:25<3:11:46, 71.47s/it] 20%|██        | 40/200 [47:36<3:10:33, 71.46s/it] 20%|██        | 41/200 [48:48<3:09:26, 71.49s/it] 21%|██        | 42/200 [50:00<3:08:19, 71.52s/it] 22%|██▏       | 43/200 [51:11<3:07:06, 71.51s/it] 22%|██▏       | 44/200 [52:23<3:05:54, 71.50s/it] 22%|██▎       | 45/200 [53:34<3:04:37, 71.47s/it] 23%|██▎       | 46/200 [54:45<3:03:24, 71.46s/it] 24%|██▎       | 47/200 [55:57<3:02:11, 71.45s/it] 24%|██▍       | 48/200 [57:08<3:01:00, 71.45s/it] 24%|██▍       | 49/200 [58:20<2:59:50, 71.46s/it][2021-10-10 20:35:52,558][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [10/20]	Time 0.057 (0.093)
+[2021-10-10 20:35:53,073][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [20/20]	Time 0.029 (0.072)
+[2021-10-10 20:35:53,125][bignas_cifar10_base_solver.py][line: 468][    INFO]  * Prec@1 59.780	Prec@5 86.090	            Loss 1.482	total_num=10000.0
+[2021-10-10 20:35:53,126][bignas_cifar10_base_solver.py][line: 488][    INFO] Subnet with settings: {'kernel_size': [3, 3, 3, 3, 3, 3, 3, 3, 3], 'out_channel': [64, 64, 64, 128, 128, 256, 256, 512, 512], 'depth': [1, 2, 2, 2, 2]}	top1 59.78	top5 86.09
+ 25%|██▌       | 50/200 [59:33<3:00:06, 72.05s/it] 26%|██▌       | 51/200 [1:00:45<2:58:27, 71.86s/it] 26%|██▌       | 52/200 [1:01:56<2:57:06, 71.80s/it] 26%|██▋       | 53/200 [1:03:08<2:55:43, 71.72s/it] 27%|██▋       | 54/200 [1:04:19<2:54:18, 71.64s/it] 28%|██▊       | 55/200 [1:05:31<2:53:10, 71.66s/it] 28%|██▊       | 56/200 [1:06:43<2:51:52, 71.61s/it] 28%|██▊       | 57/200 [1:07:54<2:50:34, 71.57s/it] 29%|██▉       | 58/200 [1:09:05<2:49:18, 71.54s/it] 30%|██▉       | 59/200 [1:10:17<2:48:02, 71.51s/it] 30%|███       | 60/200 [1:11:28<2:46:49, 71.50s/it] 30%|███       | 61/200 [1:12:40<2:45:34, 71.47s/it] 31%|███       | 62/200 [1:13:51<2:44:26, 71.49s/it] 32%|███▏      | 63/200 [1:15:03<2:43:12, 71.48s/it] 32%|███▏      | 64/200 [1:16:14<2:42:00, 71.48s/it] 32%|███▎      | 65/200 [1:17:26<2:40:46, 71.46s/it] 33%|███▎      | 66/200 [1:18:37<2:39:33, 71.45s/it] 34%|███▎      | 67/200 [1:19:48<2:38:21, 71.44s/it] 34%|███▍      | 68/200 [1:21:00<2:37:08, 71.43s/it] 34%|███▍      | 69/200 [1:22:11<2:35:57, 71.43s/it] 35%|███▌      | 70/200 [1:23:23<2:34:45, 71.43s/it] 36%|███▌      | 71/200 [1:24:34<2:33:31, 71.41s/it] 36%|███▌      | 72/200 [1:25:45<2:32:19, 71.40s/it] 36%|███▋      | 73/200 [1:26:57<2:31:08, 71.41s/it] 37%|███▋      | 74/200 [1:28:08<2:30:01, 71.44s/it] 38%|███▊      | 75/200 [1:29:20<2:28:46, 71.41s/it] 38%|███▊      | 76/200 [1:30:31<2:27:34, 71.41s/it] 38%|███▊      | 77/200 [1:31:43<2:26:23, 71.41s/it] 39%|███▉      | 78/200 [1:32:54<2:25:11, 71.40s/it] 40%|███▉      | 79/200 [1:34:05<2:24:00, 71.41s/it] 40%|████      | 80/200 [1:35:17<2:22:47, 71.40s/it] 40%|████      | 81/200 [1:36:28<2:21:35, 71.39s/it] 41%|████      | 82/200 [1:37:39<2:20:22, 71.38s/it] 42%|████▏     | 83/200 [1:38:51<2:19:12, 71.39s/it] 42%|████▏     | 84/200 [1:40:02<2:17:59, 71.38s/it] 42%|████▎     | 85/200 [1:41:14<2:16:48, 71.38s/it] 43%|████▎     | 86/200 [1:42:25<2:15:37, 71.38s/it] 44%|████▎     | 87/200 [1:43:36<2:14:24, 71.37s/it] 44%|████▍     | 88/200 [1:44:48<2:13:09, 71.34s/it] 44%|████▍     | 89/200 [1:45:59<2:11:59, 71.35s/it] 45%|████▌     | 90/200 [1:47:10<2:10:48, 71.35s/it] 46%|████▌     | 91/200 [1:48:22<2:09:36, 71.34s/it] 46%|████▌     | 92/200 [1:49:33<2:08:26, 71.36s/it] 46%|████▋     | 93/200 [1:50:44<2:07:16, 71.37s/it] 47%|████▋     | 94/200 [1:51:56<2:06:02, 71.34s/it] 48%|████▊     | 95/200 [1:53:07<2:04:51, 71.35s/it] 48%|████▊     | 96/200 [1:54:18<2:03:41, 71.36s/it] 48%|████▊     | 97/200 [1:55:30<2:02:29, 71.36s/it] 49%|████▉     | 98/200 [1:56:41<2:01:17, 71.35s/it] 50%|████▉     | 99/200 [1:57:53<2:00:07, 71.36s/it][2021-10-10 21:35:25,136][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [10/20]	Time 0.056 (0.090)
+[2021-10-10 21:35:25,649][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [20/20]	Time 0.030 (0.071)
+[2021-10-10 21:35:25,700][bignas_cifar10_base_solver.py][line: 468][    INFO]  * Prec@1 67.120	Prec@5 90.220	            Loss 1.220	total_num=10000.0
+[2021-10-10 21:35:25,701][bignas_cifar10_base_solver.py][line: 488][    INFO] Subnet with settings: {'kernel_size': [3, 3, 3, 3, 3, 3, 3, 3, 3], 'out_channel': [64, 64, 64, 128, 128, 256, 256, 512, 512], 'depth': [1, 2, 2, 2, 2]}	top1 67.12	top5 90.22
+ 50%|█████     | 100/200 [1:59:06<1:59:55, 71.96s/it] 50%|█████     | 101/200 [2:00:17<1:58:25, 71.77s/it] 51%|█████     | 102/200 [2:01:29<1:57:02, 71.65s/it] 52%|█████▏    | 103/200 [2:02:40<1:55:41, 71.56s/it] 52%|█████▏    | 104/200 [2:03:51<1:54:23, 71.49s/it] 52%|█████▎    | 105/200 [2:05:03<1:53:08, 71.46s/it] 53%|█████▎    | 106/200 [2:06:14<1:51:56, 71.45s/it] 54%|█████▎    | 107/200 [2:07:25<1:50:42, 71.42s/it] 54%|█████▍    | 108/200 [2:08:37<1:49:29, 71.41s/it] 55%|█████▍    | 109/200 [2:09:48<1:48:20, 71.43s/it] 55%|█████▌    | 110/200 [2:11:00<1:47:08, 71.43s/it] 56%|█████▌    | 111/200 [2:12:11<1:46:00, 71.46s/it] 56%|█████▌    | 112/200 [2:13:23<1:44:48, 71.46s/it] 56%|█████▋    | 113/200 [2:14:34<1:43:41, 71.51s/it] 57%|█████▋    | 114/200 [2:15:46<1:42:31, 71.53s/it] 57%|█████▊    | 115/200 [2:16:57<1:41:18, 71.52s/it] 58%|█████▊    | 116/200 [2:18:09<1:40:13, 71.59s/it] 58%|█████▊    | 117/200 [2:19:21<1:38:58, 71.54s/it] 59%|█████▉    | 118/200 [2:20:32<1:37:51, 71.61s/it] 60%|█████▉    | 119/200 [2:21:44<1:36:46, 71.68s/it] 60%|██████    | 120/200 [2:22:56<1:35:29, 71.62s/it] 60%|██████    | 121/200 [2:24:07<1:34:20, 71.65s/it] 61%|██████    | 122/200 [2:25:19<1:33:09, 71.66s/it] 62%|██████▏   | 123/200 [2:26:31<1:31:56, 71.64s/it] 62%|██████▏   | 124/200 [2:27:42<1:30:41, 71.60s/it] 62%|██████▎   | 125/200 [2:28:54<1:29:28, 71.58s/it] 63%|██████▎   | 126/200 [2:30:05<1:28:16, 71.58s/it] 64%|██████▎   | 127/200 [2:31:17<1:27:06, 71.60s/it] 64%|██████▍   | 128/200 [2:32:29<1:25:58, 71.64s/it] 64%|██████▍   | 129/200 [2:33:40<1:24:44, 71.61s/it] 65%|██████▌   | 130/200 [2:34:52<1:23:30, 71.58s/it] 66%|██████▌   | 131/200 [2:36:03<1:22:18, 71.57s/it] 66%|██████▌   | 132/200 [2:37:15<1:21:06, 71.56s/it] 66%|██████▋   | 133/200 [2:38:26<1:19:53, 71.55s/it] 67%|██████▋   | 134/200 [2:39:38<1:18:45, 71.60s/it] 68%|██████▊   | 135/200 [2:40:50<1:17:35, 71.62s/it] 68%|██████▊   | 136/200 [2:42:01<1:16:25, 71.65s/it] 68%|██████▊   | 137/200 [2:43:13<1:15:14, 71.66s/it] 69%|██████▉   | 138/200 [2:44:25<1:14:04, 71.69s/it] 70%|██████▉   | 139/200 [2:45:36<1:12:48, 71.62s/it] 70%|███████   | 140/200 [2:46:48<1:11:37, 71.62s/it] 70%|███████   | 141/200 [2:48:00<1:10:30, 71.70s/it] 71%|███████   | 142/200 [2:49:11<1:09:15, 71.65s/it] 72%|███████▏  | 143/200 [2:50:23<1:08:08, 71.72s/it] 72%|███████▏  | 144/200 [2:51:35<1:06:53, 71.68s/it] 72%|███████▎  | 145/200 [2:52:47<1:05:43, 71.70s/it] 73%|███████▎  | 146/200 [2:53:58<1:04:32, 71.72s/it] 74%|███████▎  | 147/200 [2:55:10<1:03:20, 71.71s/it] 74%|███████▍  | 148/200 [2:56:22<1:02:08, 71.71s/it] 74%|███████▍  | 149/200 [2:57:34<1:00:59, 71.76s/it][2021-10-10 22:35:06,816][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [10/20]	Time 0.061 (0.104)
+[2021-10-10 22:35:07,335][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [20/20]	Time 0.030 (0.078)
+[2021-10-10 22:35:07,440][bignas_cifar10_base_solver.py][line: 468][    INFO]  * Prec@1 73.540	Prec@5 93.030	            Loss 1.033	total_num=10000.0
+[2021-10-10 22:35:07,441][bignas_cifar10_base_solver.py][line: 488][    INFO] Subnet with settings: {'kernel_size': [3, 3, 3, 3, 3, 3, 3, 3, 3], 'out_channel': [64, 64, 64, 128, 128, 256, 256, 512, 512], 'depth': [1, 2, 2, 2, 2]}	top1 73.54	top5 93.03
+ 75%|███████▌  | 150/200 [2:58:48<1:00:21, 72.42s/it] 76%|███████▌  | 151/200 [2:59:59<58:55, 72.16s/it]   76%|███████▌  | 152/200 [3:01:11<57:37, 72.02s/it] 76%|███████▋  | 153/200 [3:02:22<56:18, 71.89s/it] 77%|███████▋  | 154/200 [3:03:34<55:03, 71.82s/it] 78%|███████▊  | 155/200 [3:04:46<53:53, 71.85s/it] 78%|███████▊  | 156/200 [3:05:58<52:39, 71.82s/it] 78%|███████▊  | 157/200 [3:07:10<51:29, 71.86s/it] 79%|███████▉  | 158/200 [3:08:22<50:19, 71.88s/it] 80%|███████▉  | 159/200 [3:09:33<49:03, 71.80s/it] 80%|████████  | 160/200 [3:10:45<47:48, 71.72s/it] 80%|████████  | 161/200 [3:11:56<46:34, 71.65s/it] 81%|████████  | 162/200 [3:13:08<45:23, 71.66s/it] 82%|████████▏ | 163/200 [3:14:20<44:11, 71.67s/it] 82%|████████▏ | 164/200 [3:15:31<43:01, 71.70s/it] 82%|████████▎ | 165/200 [3:16:43<41:49, 71.71s/it] 83%|████████▎ | 166/200 [3:17:55<40:37, 71.68s/it] 84%|████████▎ | 167/200 [3:19:07<39:27, 71.75s/it] 84%|████████▍ | 168/200 [3:20:19<38:16, 71.76s/it] 84%|████████▍ | 169/200 [3:21:30<37:04, 71.77s/it] 85%|████████▌ | 170/200 [3:22:42<35:53, 71.77s/it] 86%|████████▌ | 171/200 [3:23:54<34:39, 71.70s/it] 86%|████████▌ | 172/200 [3:25:05<33:29, 71.75s/it] 86%|████████▋ | 173/200 [3:26:17<32:17, 71.76s/it] 87%|████████▋ | 174/200 [3:27:29<31:04, 71.71s/it] 88%|████████▊ | 175/200 [3:28:40<29:50, 71.63s/it] 88%|████████▊ | 176/200 [3:29:52<28:37, 71.57s/it] 88%|████████▊ | 177/200 [3:31:03<27:25, 71.55s/it] 89%|████████▉ | 178/200 [3:32:15<26:12, 71.50s/it] 90%|████████▉ | 179/200 [3:33:26<25:01, 71.49s/it] 90%|█████████ | 180/200 [3:34:38<23:49, 71.47s/it] 90%|█████████ | 181/200 [3:35:49<22:37, 71.45s/it] 91%|█████████ | 182/200 [3:37:00<21:26, 71.46s/it] 92%|█████████▏| 183/200 [3:38:12<20:14, 71.47s/it] 92%|█████████▏| 184/200 [3:39:23<19:03, 71.45s/it] 92%|█████████▎| 185/200 [3:40:35<17:51, 71.45s/it] 93%|█████████▎| 186/200 [3:41:46<16:40, 71.45s/it] 94%|█████████▎| 187/200 [3:42:58<15:28, 71.46s/it] 94%|█████████▍| 188/200 [3:44:09<14:17, 71.45s/it] 94%|█████████▍| 189/200 [3:45:21<13:05, 71.45s/it] 95%|█████████▌| 190/200 [3:46:32<11:54, 71.45s/it] 96%|█████████▌| 191/200 [3:47:43<10:43, 71.45s/it] 96%|█████████▌| 192/200 [3:48:55<09:31, 71.39s/it] 96%|█████████▋| 193/200 [3:50:06<08:18, 71.26s/it] 97%|█████████▋| 194/200 [3:51:17<07:06, 71.15s/it] 98%|█████████▊| 195/200 [3:52:28<05:55, 71.10s/it] 98%|█████████▊| 196/200 [3:53:39<04:44, 71.10s/it] 98%|█████████▊| 197/200 [3:54:50<03:33, 71.14s/it] 99%|█████████▉| 198/200 [3:56:01<02:22, 71.16s/it]100%|█████████▉| 199/200 [3:57:12<01:11, 71.21s/it][2021-10-10 23:34:45,008][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [10/20]	Time 0.056 (0.094)
+[2021-10-10 23:34:45,523][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [20/20]	Time 0.030 (0.073)
+[2021-10-10 23:34:45,574][bignas_cifar10_base_solver.py][line: 468][    INFO]  * Prec@1 77.220	Prec@5 94.190	            Loss 0.928	total_num=10000.0
+[2021-10-10 23:34:45,576][bignas_cifar10_base_solver.py][line: 488][    INFO] Subnet with settings: {'kernel_size': [3, 3, 3, 3, 3, 3, 3, 3, 3], 'out_channel': [64, 64, 64, 128, 128, 256, 256, 512, 512], 'depth': [1, 2, 2, 2, 2]}	top1 77.22	top5 94.19
+100%|██████████| 200/200 [3:58:26<00:00, 71.87s/it]100%|██████████| 200/200 [3:58:26<00:00, 71.53s/it]
+[2021-10-10 23:34:47,037][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [10/20]	Time 0.056 (0.092)
+[2021-10-10 23:34:47,549][bignas_cifar10_base_solver.py][line: 455][    INFO] Test: [20/20]	Time 0.029 (0.072)
+[2021-10-10 23:34:47,598][bignas_cifar10_base_solver.py][line: 468][    INFO]  * Prec@1 77.220	Prec@5 94.190	            Loss 0.928	total_num=10000.0
+[2021-10-10 23:34:47,599][bignas_cifar10_base_solver.py][line: 488][    INFO] Subnet with settings: {'kernel_size': [3, 3, 3, 3, 3, 3, 3, 3, 3], 'out_channel': [64, 64, 64, 128, 128, 256, 256, 512, 512], 'depth': [1, 2, 2, 2, 2]}	top1 77.22	top5 94.19
+[2021-10-10 23:34:47,605][bignas_cifar10_base_solver.py][line: 583][    INFO] After finetune subnet {"flops": 555.469, "params": 11.21, "image_size": 32, "subnet_settings": {"kernel_size": [3, 3, 3, 3, 3], "out_channel": [64, 64, 128, 256, 512], "depth": [1, 2, 2, 2, 2]}, "top1": 77.22, "top5": 94.19}

@@ -1,0 +1,127 @@
+seed_base: 304
+
+model:
+    type: spring_big_resnet_basic
+    kwargs:
+        num_classes: 10
+        zero_last_gamma: True
+        stride_stages: [1, 1, 2, 2, 2]
+        use_maxpool: False
+        out_channel:
+            space:
+                min: [32, 32, 64, 128, 256]
+                max: [64, 96, 160, 320, 640]
+                stride: [8, 8, 16, 16, 32]
+            sample_strategy: stage_wise
+        kernel_size:
+            space:
+                min: [3, 3, 3, 3, 3]
+                max: [7, 3, 3, 3, 3]
+                stride: 2
+            sample_strategy: stage_wise
+        expand_ratio: [0, 1, 1, 1, 1]
+        depth:
+            space:
+                min: [1, 1, 1, 1, 1]
+                max: [1, 2, 2, 3, 3]
+                stride: 1
+            sample_strategy: stage_wise_depth
+
+bignas:
+    train:
+        sample_subnet_num: 4
+        sample_strategy: ['max', 'random', 'random', 'min']
+        valid_before_train: False
+    data:
+        share_interpolation: False
+        interpolation_type: bicubic
+        image_size_list: [32]
+        stride: 8
+        test_image_size_list: [32]
+    distiller:
+        weight: 1.0
+        type: inplace_kd
+        s_name: ['module.classifier']
+        t_name: ['module.classifier']
+        kwargs:
+            T: 1
+    subnet:
+        image_size: 32
+        subnet_settings:
+            kernel_size: [3, 3, 3, 3, 3]
+            out_channel: [32, 32, 64, 128, 256]
+            depth: [1, 1, 1, 1, 1]
+        save_subnet_weight: True
+        test_subnet_latency: False
+    latency:
+        hardware1:
+            hardware_name: 3559A
+            backend_name: hisvp-nnie11
+            data_type: int8
+            batch_size: 8
+            test_latency: True
+        hardware2:
+            hardware_name: T4
+            backend_name: cuda11.0-trt7.1
+            data_type: int8
+            batch_size: 64
+            test_latency: True
+        hardware3:
+            hardware_name: cpu
+            backend_name: ppl2
+            data_type: fp32
+            batch_size: 1
+            test_latency: True
+
+dist:                       # distributed communication
+    sync: False              # if 'True', synchronize gradients after forward
+                            # if 'False', synchronize gradient during forward
+
+optimizer:
+    type: SGD
+    kwargs:
+        nesterov: True
+        momentum: 0.9
+        weight_decay: 0.0005
+    fp16_normal_bn: False
+
+    dist:
+        sync: False
+
+lr_scheduler:
+    type: CosineEpoch
+    kwargs:
+        base_lr: 0.2
+        warmup_lr: 0.2
+        min_lr: 0.0
+        #warmup_steps: 0
+        #max_iter: 250000
+        warmup_epoch: 0
+        max_epoch: 200
+
+label_smooth: 0.1
+ema:                        # exponential moving average details
+    enable: False
+    kwargs:
+        decay: 0.999
+
+lms:                      # large model support: utilize cpu to save gpu memory
+    enable: False         # whether to use lms
+    kwargs:
+        limit: 12         # the soft limit in G-bytes on GPU memory allocated for tensors
+
+data:
+    task: cifar10
+    batch_size: 256
+    num_workers: 4
+    autoaugment: True
+    cutout: True
+    input_size: 32
+
+saver:                                # saving or loading details
+    print_freq: 10                    # frequence of printing logger
+    val_epoch_freq: 1
+    val_freq: 5000                    # frequence of evaluating during training
+    save_many: False                   # whether to save checkpoints after every evaluation
+    pretrain:
+       path: ../checkpoints/ckpt.pth.tar
