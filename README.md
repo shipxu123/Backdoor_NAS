@@ -42,4 +42,6 @@ bash run.sh                   # get the adv result generated from uncompressed m
 cd ../Min_Adv_Evaluate        # or (Min_Adv_Sample_Accuracy)
 bash run.sh                   # get the adv result generated from fully compressed model
 ```
-
+## Acknowledgements
+This repo is constructed on top of the awesome toolbox prototype: https://github.com/Rivulet-1993/prototype.git.
+Some of the ideas are inspired by an amazing work named BigNAS.
